@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      -
+        name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: "x64"
+      -
+        name: Install Python modules
+        run: |
+          pip install wheel 
+          pip install pyinstaller
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Build
+        run: |
+          pyinstaller -F onenote_font_fixer.py
+          pyinstaller -F recover.py
+      -
+        name: Get Current Version
+        id: get_version
+        uses: battila7/get-version-action@v2
+      -
+        name: Zip
+        run: |
+          mv dist "OneNote Font Fixer"
+          cp LICENSE "OneNote Font Fixer"
+          cp README.md "OneNote Font Fixer"
+          mkdir onenote-font-fixer
+          mv LICENSE onenote-font-fixer
+          mv README.md onenote-font-fixer
+          mv *.py onenote-font-fixer
+          Compress-Archive -Path "OneNote Font Fixer" -DestinationPath OneNote-Font-Fixer-${{ steps.get_version.outputs.version }}-Windows.zip
+          Compress-Archive -Path "onenote-font-fixer" -DestinationPath OneNote-Font-Fixer-${{ steps.get_version.outputs.version }}-Python.zip
+      -
+        name: Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          draft: true
+          prerelease: false
+          title: null
+          automatic_release_tag: ${{ steps.get_version.outputs.version }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            *.zip
