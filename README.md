@@ -31,4 +31,4 @@
 ## 参考
 
 * [接力治愈强迫症，onenote 2016字体防切换！ - rec0rd - 博客园](https://www.cnblogs.com/rec0rd/p/14761148.html)
-* [OneFont for OneNote防止字体切换工具 – LXF's X Factory](https://lxf.me/116?unapproved=815&moderation-hash=cf6f75f95c7e998e75cbc001a0c905f9)
+* [OneFont for OneNote防止字体切换工具 – LXF's X Factory](https://lxf.me/116)
